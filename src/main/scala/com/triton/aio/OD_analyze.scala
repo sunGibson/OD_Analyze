@@ -6,7 +6,7 @@ import org.apache.spark.sql.functions._
 /**
   * Created by cuitu on 2018/3/26.
   */
-object OD_analyze {
+object OD_trip_analyze {
   def main(args: Array[String]) {
     val GSMFilePath = "hdfs://master:9000/user/yuty/data/"
     val GSMFileName = "GSM20140303MD.csv"
