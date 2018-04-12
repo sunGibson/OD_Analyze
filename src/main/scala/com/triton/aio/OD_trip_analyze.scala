@@ -11,7 +11,7 @@ object OD_trip_analyze {
     val GSMFilePath = "hdfs://master:9000/user/yuty/data/"
     val GSMFileName = "GSM20140303MD.csv"
     val GSMStationName = "BasestationSArea2014.csv"
-
+    
     //初始化sparkSession
     val spark = SparkSession.builder().master("spark://master:7077").appName("OD_trip_analyze").getOrCreate()
     //读取GSM数据
@@ -43,7 +43,7 @@ object OD_trip_analyze {
     spark.sql("SELECT A.MSID,A.OX,A.OY,A.OA,A.ENTERTIME,B.DX,B.DY,B.DA,B.DEPARTTIME,A.N,B.ID FROM GSMDATA_TABLE_8 A JOIN GSMDATA_TABLE_9 B ON A.N+1=B.N AND A.MSID=B.ID").createOrReplaceTempView("GSMDATA_TABLE_10")
     spark.sql("SELECT * FROM GSMDATA_TABLE_10 WHERE (cast(DEPARTTIME AS long)-cast(ENTERTIME AS long))>1800").createOrReplaceTempView("GSMDATA_TABLE_11")
     val OD_ANALYZE = spark.sql("SELECT OA,DA,count(*) ALLOD FROM GSMDATA_TABLE_11 GROUP BY OA,DA")
-    OD_ANALYZE.write.mode(SaveMode.Overwrite).format("csv").option("header", "true").save(GSMFilePath+"output/ALL_OD_ANALYZE")
+    OD_ANALYZE.write.mode(SaveMode.Overwrite).format("csv").option("header", "true").save(GSMFilePath+"output/OD_TRIP_ANALYZE")
     //最终的OD出行
     spark.close()
 
