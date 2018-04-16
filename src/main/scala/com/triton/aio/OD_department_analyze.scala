@@ -8,9 +8,17 @@ import org.apache.spark.sql.functions._
   */
 object OD_department_analyze {
   def main(args: Array[String]): Unit = {
-    val GSMFilePath = "hdfs://master:9000/user/yuty/data/"
-    val GSMFileName = "GSM20140303MD.csv"
-    val GSMStationName = "BasestationSArea2014.csv"
+    var GSMFilePath = "hdfs://master:9000/user/yuty/data/"
+    var GSMFileName = "GSM20140303MD.csv"
+    var GSMStationName = "BasestationSArea2014.csv"
+    if ( args.length == 3 ){
+      GSMFilePath = args(0)
+      GSMFileName = args(1)
+      GSMStationName = args(2)
+    }else{
+      println("Please right input GSMFilePath、GSMFileName、GSMStationName")
+      System.exit(1)
+    }
 
     val spark = SparkSession.builder().master("spark://master:7077").appName("OD_department_analyze").getOrCreate()
     //读取GSM数据，并转换数据格式
