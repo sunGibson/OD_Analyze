@@ -7,8 +7,15 @@ import org.apache.spark.sql._
   */
 object OD_car_analyze {
   def main(args: Array[String]): Unit = {
-    val CAR_GPS_FilePath = "hdfs://master:9000/user/yuty/data/"
-    val CAR_GPS_FileName = "all_gps_1603"
+    var CAR_GPS_FilePath = "hdfs://master:9000/user/yuty/data/"
+    var CAR_GPS_FileName = "all_gps_1603"
+    if ( args.length == 2 ){
+      CAR_GPS_FilePath = args(0)
+      CAR_GPS_FileName = args(1)
+    }else{
+      println("Please right input CAR_GPS_FilePath、CAR_GPS_FileName")
+      System.exit(1)
+    }
 
     val spark = SparkSession.builder().master("spark://master:7077").appName("OD_car_analyze").getOrCreate()
     val ORIGINAL_DATA = spark.read.format("csv").option("delimiter","|").load(CAR_GPS_FilePath+CAR_GPS_FileName)
